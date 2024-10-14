@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    LD-AN
+  </title>
+  <style>
+    body{
+    background-image: linear-gradient(to right, #FAEE00,#fff,#fff, #FAEE00);
+  }
+  
+  a{
+    text-decoration:none;
+  }
+  
+  form{
+    background: linear-gradient(135deg, rgba(255,255,255, 0.1), rgba(255, 255, 255, 0));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 32px;
+  width:95%;
+  height: 80%;
+}
+ 
+button{
+  border: none;
+  width: 80%;
+  padding: 10px;
+  border-radius: 7px; 
+  background-image: linear-gradient(to right, #FAEE00,red, #FAEE00);
+  font-size: 20px;
+
+}
+
+input{
+width: 80%;
+padding: 7px;
+border-radius: 7px; 
+background: none;
+border: 5px solid #3500FA;
+}
+
+h1{
+color: red;
+}
+  </style>
+</head>
+<body>
+
+<center>
+<h1>Sending an application</h1>
+  <br>
+     <a href="index.html" 
+     style="font-size:20px;">⬅️Go back</a>
+<br><br>
+<form method="POST" id="form">
+  <br><br><br><br>
+ 
+    <input type="hidden" name="access_key" value="f12aba73-4086-4287-999a-05add6eda7ea">
+<br><span>Email</span><br>
+    <input type="email" name="name" required>
+<br> <br><span>wallet address</span><br>
+    <input type="usr" name="email" required>
+<br> <br><span>Money</span><br>
+    <input type="number" name="number" required></input>
+ 
+    <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+<br>
+<a href="mailto:liderant55@gmail.com">
+<center><p style="color: red;">If your money is not transferred, you can send your complaint to the admin.</p></center>
+</a>
+
+  <button type="submit">Send it</button>
+   
+
+    <div id="result"></div>
+<br>
+</form>
+
+
+<script>
+  const form = document.getElementById('form');
+const result = document.getElementById('result');
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault();
+  const formData = new FormData(form);
+  const object = Object.fromEntries(formData);
+  const json = JSON.stringify(object);
+  result.innerHTML = "Please wait..."
+
+    fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: json
+        })
+        .then(async (response) => {
+            let json = await response.json();
+            if (response.status == 200) {
+                result.innerHTML = "Form submitted successfully";
+            } else {
+                console.log(response);
+                result.innerHTML = json.message;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            result.innerHTML = "Something went wrong!";
+        })
+        .then(function() {
+            form.reset();
+            setTimeout(() => {
+                result.style.display = "none";
+            }, 3000);
+        });
+});
+</script>
+</body>
+</html>
